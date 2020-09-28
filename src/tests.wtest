@@ -1,0 +1,72 @@
+import barrileteCosmico.*
+import destinos.*
+import usuarios.*
+
+
+describe "Caso tipico"{
+	
+	test "Los destinos mas importantes de Barrilete Cósmico son Garlic's Sea y Last Toninas" {
+		assert.equals(#{garlicsSea,lastToninas}, barrileteCosmico.destinosImportantes())
+	}
+	test "Silver's Sea es un destino peligroso (no lo es)"{
+		assert.notThat(silversSea.esDestinoPeligroso())
+	}
+	test "Barrilete Cósmico es empresa extrema"{
+		assert.that(barrileteCosmico.esEmpresaExtrema())
+	}
+	test "Conocer la carta de destinos de Barrilete Cósmico"{
+		assert.equals(#{garlicsSea,silversSea,lastToninas,goodAirs}, barrileteCosmico.destinos())
+	}
+	test "Obtener las millas de PHari (500km)"{
+		assert.equals(500, pabloHari.obtenerKM())
+	}
+}
+
+
+describe "Aplicar un 25% de Last Toninas"{
+	
+	fixture{
+		lastToninas.aplicarDescuento(25)
+	}
+	test "Aplicar 25% a las toninas da 2625"{
+		assert.equals(2625, lastToninas.costo())
+	}
+	test "Aplicar 25% a las toninas, y esta tiene el Certificado de Descuento como equipaje imprescindible"{
+		assert.that(lastToninas.equipaje().contains("Certificado de descuento"))
+	}
+}
+
+describe "Aplicar un 15% a todos los destinos"{
+	
+	fixture{
+		barrileteCosmico.aplicarDescuento(15)
+	}
+	test"Garlic's Sea cuesta 2125"{
+		assert.equals(2125, garlicsSea.costo())
+	}
+	test"Silver's Sea cuesta 1147.5"{
+		assert.equals(1147.5, silversSea.costo())
+	}
+	test"Last Toninas cuesta 2975"{
+		assert.equals(2975, lastToninas.costo())
+	}
+	test"Good Airs cuesta 1275"{
+		assert.equals(1275, goodAirs.costo())
+	}
+	test"Todos tienen el certificado"{
+		assert.that(barrileteCosmico.destinos().all({unDestino=>unDestino.equipaje().contains("Certificado de descuento")}))
+	}
+}
+
+describe "PHari puede volar a Silver's Sea"{
+	
+	fixture{
+		pabloHari.volarAUnDestino(silversSea)
+	}
+	test "Silver's Sea es agregado en su historial"{
+		assert.that(pabloHari.destinosConocidos().contains(silversSea))
+	}
+	test "PHari tiene en su cuenta $150"{
+		assert.equals(150, pabloHari.dinero())
+	}
+}
