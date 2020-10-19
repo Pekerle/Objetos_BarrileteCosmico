@@ -1,4 +1,4 @@
-import destinos.*
+import localidades.*
 import usuarios.*
 
 object barrileteCosmico {
@@ -16,9 +16,6 @@ object barrileteCosmico {
 		return destinosImportantes.any({unDestino=>unDestino.esDestinoPeligroso()})
 	}
 	method conocerCarta(){
-		return destinos
-	}
-	method destinos(){
 		return destinos
 	}
 }

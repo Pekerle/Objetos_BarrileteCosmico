@@ -1,7 +1,7 @@
 import barrileteCosmico.*
-import destinos.*
+import localidades.*
+import mediosDeTransporte.*
 import usuarios.*
-
 
 describe "Caso tipico"{
 	
@@ -15,7 +15,7 @@ describe "Caso tipico"{
 		assert.that(barrileteCosmico.esEmpresaExtrema())
 	}
 	test "Conocer la carta de destinos de Barrilete Cósmico"{
-		assert.equals(#{garlicsSea,silversSea,lastToninas,goodAirs}, barrileteCosmico.destinos())
+		assert.equals(#{garlicsSea,silversSea,lastToninas,goodAirs}, barrileteCosmico.conocerCarta())
 	}
 	test "Obtener las millas de PHari (500km)"{
 		assert.equals(500, pabloHari.obtenerKM())
@@ -29,7 +29,7 @@ describe "Aplicar un 25% de Last Toninas"{
 		lastToninas.aplicarDescuento(25)
 	}
 	test "Aplicar 25% a las toninas da 2625"{
-		assert.equals(2625, lastToninas.costo())
+		assert.equals(2625, lastToninas.costoDestino())
 	}
 	test "Aplicar 25% a las toninas, y esta tiene el Certificado de Descuento como equipaje imprescindible"{
 		assert.that(lastToninas.equipaje().contains("Certificado de descuento"))
@@ -42,31 +42,56 @@ describe "Aplicar un 15% a todos los destinos"{
 		barrileteCosmico.aplicarDescuento(15)
 	}
 	test"Garlic's Sea cuesta 2125"{
-		assert.equals(2125, garlicsSea.costo())
+		assert.equals(2125, garlicsSea.costoDestino())
 	}
 	test"Silver's Sea cuesta 1147.5"{
-		assert.equals(1147.5, silversSea.costo())
+		assert.equals(1147.5, silversSea.costoDestino())
 	}
 	test"Last Toninas cuesta 2975"{
-		assert.equals(2975, lastToninas.costo())
+		assert.equals(2975, lastToninas.costoDestino())
 	}
 	test"Good Airs cuesta 1275"{
-		assert.equals(1275, goodAirs.costo())
+		assert.equals(1275, goodAirs.costoDestino())
 	}
 	test"Todos tienen el certificado"{
-		assert.that(barrileteCosmico.destinos().all({unDestino=>unDestino.equipaje().contains("Certificado de descuento")}))
+		assert.that(barrileteCosmico.conocerCarta().all({unDestino=>unDestino.equipaje().contains("Certificado de descuento")}))
 	}
 }
 
 describe "PHari puede volar a Silver's Sea"{
 	
 	fixture{
-		pabloHari.volarAUnDestino(silversSea)
+		pabloHari.viajarADestino(silversSea, avion)
 	}
 	test "Silver's Sea es agregado en su historial"{
-		assert.that(pabloHari.destinosConocidos().contains(silversSea))
+		assert.that(pabloHari.viajes().contains(silversSea))
 	}
 	test "PHari tiene en su cuenta $150"{
 		assert.equals(150, pabloHari.dinero())
+	}
+}
+
+describe "garlicsSea está en el KM 10, silversSea está en el KM 20 y PHari quiere viajar a Silver's Sea"{
+	
+	fixture{
+		garlicsSea.ubicacionKM(10)
+		silversSea.ubicacionKM(20)
+		pabloHari.viajarADestino(silversSea, avion)
+	}
+		
+	test "La distancia entre garlicsSea y silversSeas es 10" {
+		assert.equals(10, garlicsSea.distanciaALocalidad(silversSea))
+	}
+	test "El costo del transporte para viajar desde garlicsSea a silverSeas en avion es de 20" {
+		assert.equals(20, garlicsSea.costoTransporte(silversSea,avion))
+	}
+	test "El costo total para viajar desde silversSea a lastToninas en avion es de " {
+		assert.equals(1370, silversSea.costoTotal(garlicsSea,avion))
+	}
+	test "PHari viaja a silversSeas y le queda $130" {
+		assert.equals(130, pabloHari.dinero())
+	}
+	test "La nueva localidad de origen de PHari es silversSea" {
+		assert.equals(silversSea, pabloHari.localidadOrigen())
 	}
 }

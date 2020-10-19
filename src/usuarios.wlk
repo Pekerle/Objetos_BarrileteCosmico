@@ -1,27 +1,29 @@
-import destinos.*
+import localidades.*
+import mediosDeTransporte.*
 
-object pabloHari {
-	const usuario="PHari"
-	const destinosConocidos=[lastToninas,goodAirs]
-	const usuariosSeguidos=[]
-	var dinero=1500
+class Usuario {
+	const usuario
+	var localidadOrigen
+	var dinero
+	var viajes
+	var usuariosSeguidos
 	
 	method dinero(){
 		return dinero
 	}
-	method destinosConocidos(){
-		return destinosConocidos
+	method viajes(){
+		return viajes
 	}
-	method volarAUnDestino(unDestino){
-		if(dinero>unDestino.costo())
+	method viajarADestino(unViaje, medioTransporte){
+		if(dinero>unViaje.costoTotal(localidadOrigen, medioTransporte))
 		{
-			dinero-=unDestino.costo()
-			destinosConocidos.add(unDestino)
+			dinero-=unViaje.costoTotal(localidadOrigen, medioTransporte)
+			viajes.add(unViaje)
+			localidadOrigen = unViaje
 		}
-		else{}
 	}
 	method obtenerKM(){
-		return destinosConocidos.sum({destino=>destino.costo()/10})
+		return viajes.sum({viaje=>viaje.costoDestino()/10})
 	}
 	method seguirUsuario(unUsuario){
 		usuariosSeguidos.add(unUsuario)
@@ -30,4 +32,15 @@ object pabloHari {
 	method serSeguido(unUsuario){
 		usuariosSeguidos.add(unUsuario)
 	}
+	method localidadOrigen(){
+		return localidadOrigen
+	}
 }
+
+const pabloHari = new Usuario (
+	usuario="PHari",
+	dinero=1500,
+	viajes=[lastToninas,goodAirs],
+	usuariosSeguidos=[],
+	localidadOrigen = garlicsSea
+)
