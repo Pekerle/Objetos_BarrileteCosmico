@@ -1,4 +1,4 @@
-import mediosDeTransporte.*
+import medioDeTransporte.*
 
 class Localidad {
 	var costo
@@ -8,21 +8,12 @@ class Localidad {
 	method costoDestino(){
 		return costo
 	}
-	method costoTransporte(otraLocalidad, medioTransporte) {
-		return self.distanciaALocalidad(otraLocalidad) * medioTransporte.costoKM()
-	}
-	method costoTotal(otraLocalidad, medioTransporte){
-		return self.costoDestino() + self.costoTransporte(otraLocalidad, medioTransporte)
-	}
 	method ubicacionKM(){
 		return ubicacionKM
 	}
-	method ubicacionKM(nuevaUbicacionKM){
-		ubicacionKM = nuevaUbicacionKM
+	method ubicacionKM(unosKM){
+		ubicacionKM = unosKM
 	}
-	method distanciaALocalidad(otraLocalidad){
-		return (ubicacionKM - otraLocalidad.ubicacionKM()).abs()
-	}	
 	method aplicarDescuento(unDescuento){
   		costo = costo-costo*unDescuento/100
   		self.agregarEquipaje("Certificado de descuento")

@@ -1,7 +1,8 @@
 import barrileteCosmico.*
-import localidades.*
-import mediosDeTransporte.*
-import usuarios.*
+import localidad.*
+import medioDeTransporte.*
+import usuario.*
+import viaje.*
 
 describe "Caso tipico"{
 	
@@ -61,7 +62,7 @@ describe "Aplicar un 15% a todos los destinos"{
 describe "PHari puede volar a Silver's Sea"{
 	
 	fixture{
-		pabloHari.viajarADestino(silversSea, avion)
+		barrileteCosmico.prepararViaje(pabloHari, silversSea)
 	}
 	test "Silver's Sea es agregado en su historial"{
 		assert.that(pabloHari.viajes().contains(silversSea))
@@ -76,17 +77,17 @@ describe "garlicsSea está en el KM 10, silversSea está en el KM 20 y PHari qui
 	fixture{
 		garlicsSea.ubicacionKM(10)
 		silversSea.ubicacionKM(20)
-		pabloHari.viajarADestino(silversSea, avion)
+		barrileteCosmico.prepararViaje(pabloHari, silversSea)
 	}
 		
 	test "La distancia entre garlicsSea y silversSeas es 10" {
-		assert.equals(10, garlicsSea.distanciaALocalidad(silversSea))
+		assert.equals(10, viajeGenerico.distanciaALocalidad())
 	}
 	test "El costo del transporte para viajar desde garlicsSea a silverSeas en avion es de 20" {
-		assert.equals(20, garlicsSea.costoTransporte(silversSea,avion))
+		assert.equals(20, viajeGenerico.costoTransporte())
 	}
-	test "El costo total para viajar desde silversSea a lastToninas en avion es de " {
-		assert.equals(1370, silversSea.costoTotal(garlicsSea,avion))
+	test "El costo total para viajar desde garlicsSea a silverSeas en avion es de " {
+		assert.equals(1370, viajeGenerico.costoTotal())
 	}
 	test "PHari viaja a silversSeas y le queda $130" {
 		assert.equals(130, pabloHari.dinero())

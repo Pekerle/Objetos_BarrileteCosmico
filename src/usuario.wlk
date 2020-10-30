@@ -1,5 +1,5 @@
-import localidades.*
-import mediosDeTransporte.*
+import localidad.*
+import medioDeTransporte.*
 
 class Usuario {
 	const usuario
@@ -11,16 +11,11 @@ class Usuario {
 	method dinero(){
 		return dinero
 	}
+	method pagar(unMonto){
+		dinero -= unMonto
+	}
 	method viajes(){
 		return viajes
-	}
-	method viajarADestino(unViaje, medioTransporte){
-		if(dinero>unViaje.costoTotal(localidadOrigen, medioTransporte))
-		{
-			dinero-=unViaje.costoTotal(localidadOrigen, medioTransporte)
-			viajes.add(unViaje)
-			localidadOrigen = unViaje
-		}
 	}
 	method obtenerKM(){
 		return viajes.sum({viaje=>viaje.costoDestino()/10})
@@ -34,6 +29,10 @@ class Usuario {
 	}
 	method localidadOrigen(){
 		return localidadOrigen
+	}
+	method agregarViaje(unViaje){
+		viajes.add(unViaje.localidadDestino())
+		localidadOrigen = unViaje.localidadDestino()
 	}
 }
 
