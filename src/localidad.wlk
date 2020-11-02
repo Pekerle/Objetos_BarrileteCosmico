@@ -35,26 +35,75 @@ class Localidad {
 	}
 }
 
+class Playa inherits Localidad{
+	override method esDestinoPeligroso(){
+		return false
+	}
+}
+
+class Montania inherits Localidad{
+	var altura
+	override method esDestinoPeligroso(){
+		if(altura>5000)
+			return true
+		else
+			return super()
+	}
+	override method esDestinoImportante(){
+		return true
+	}
+}
+
+class CiudadHistorica inherits Localidad{
+	var cantidadDeMuseos
+	
+	override method esDestinoPeligroso(){
+		return !equipaje.contains("Seguro de asistencia al viajero")
+	}
+	override method esDestinoImportante(){
+		return cantidadDeMuseos > 3 && super()
+	}
+}
+
 const garlicsSea = new Localidad(
 	costo=2500,
-	equipaje=["Caña de Pescar","Piloto"],
+	equipaje = ["Caña de Pescar","Piloto"],
 	ubicacionKM = 0
 )
 
 const silversSea = new Localidad (
 	costo=1350,
-	equipaje=["Protector Solar","Equipo de Buceo"],
+	equipaje = ["Protector Solar","Equipo de Buceo"],
 	ubicacionKM = 0
 )
 
 const lastToninas = new Localidad (
-	costo=3500,
-	equipaje=["Vacuna Gripal","Vacuna B","Necronomicon"],
+	costo = 3500,
+	equipaje = ["Vacuna Gripal","Vacuna B","Necronomicon"],
 	ubicacionKM = 0
 )
 
 const goodAirs = new Localidad (
 	costo=1500,
-	equipaje=["Cerveza","Protector Solar"],
+	equipaje = ["Cerveza","Protector Solar"],
 	ubicacionKM = 0
+)
+const saintClement = new Playa(
+	costo = 750, 
+	equipaje = ["Protector Solar","Cerveza"], 
+	ubicacionKM = 0
+)
+
+const nono = new Montania(
+	costo = 7500, 
+	equipaje = ["Protector Solar","Cerveza","Vacuna cuartetera"], 
+	ubicacionKM = 0,
+	altura = 887
+)
+
+const lujan = new CiudadHistorica(
+	costo = 2570, 
+	equipaje = ["Protector Solar","Cerveza","Seguro de asistencia al viajero"], 
+	ubicacionKM = 0,
+	cantidadDeMuseos = 4
 )

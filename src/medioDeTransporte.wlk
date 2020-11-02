@@ -1,21 +1,61 @@
 class MedioDeTransporte {
 	const cuantoTarda
-	const costoKM
 	
 	method cuantoTarda(){
 		return cuantoTarda
 	}
-	method costoKM(){
-		return costoKM
+	method costoKM()
+}
+
+class Avion inherits MedioDeTransporte{
+	var turbinas= #{}
+	override method costoKM(){
+		return turbinas.sum({turbina=>turbina.impulsoAdicional()});
 	}
 }
 
-const avion = new MedioDeTransporte(
-	cuantoTarda = 10,
-	costoKM = 2
+class Turbina {
+	const impulsoAdicional
+	method impulsoAdicional(){
+		return impulsoAdicional
+	}
+}
+
+class Micro inherits MedioDeTransporte{
+	override method costoKM(){
+		return 5000
+	}
+}
+
+class Tren inherits MedioDeTransporte{
+	override method costoKM(){
+		return 1429
+	} 
+}
+
+class Barco inherits MedioDeTransporte{
+	var probabilidadDeChocar 
+	override method costoKM(){return probabilidadDeChocar*1000}
+}
+
+const turbina= new Turbina(
+	impulsoAdicional = 10
 )
 
-const micro = new MedioDeTransporte(
+const avion= new Avion(
+	cuantoTarda = 25,
+	turbinas=#{turbina}
+)
+
+const micro = new Micro(
+	cuantoTarda = 40
+)
+
+const tren = new Tren(
+	cuantoTarda = 30
+)
+
+const barco = new Barco(
 	cuantoTarda = 10,
-	costoKM = 2
+	probabilidadDeChocar = 2
 )

@@ -83,16 +83,56 @@ describe "garlicsSea está en el KM 10, silversSea está en el KM 20 y PHari qui
 	test "La distancia entre garlicsSea y silversSeas es 10" {
 		assert.equals(10, viajeGenerico.distanciaALocalidad())
 	}
-	test "El costo del transporte para viajar desde garlicsSea a silverSeas en avion es de 20" {
-		assert.equals(20, viajeGenerico.costoTransporte())
+	test "El costo del transporte para viajar desde garlicsSea a silverSeas en avion (con UNA turbina con impulso adicional 10) es de 100" {
+		assert.equals(100, viajeGenerico.costoTransporte())
 	}
-	test "El costo total para viajar desde garlicsSea a silverSeas en avion es de " {
-		assert.equals(1370, viajeGenerico.costoTotal())
+	test "El costo total para viajar desde garlicsSea a silverSeas en avion es $1450" {
+		assert.equals(1450, viajeGenerico.costo())
 	}
-	test "PHari viaja a silversSeas y le queda $130" {
-		assert.equals(130, pabloHari.dinero())
+	test "PHari viaja a silversSeas y le queda $50" {
+		assert.equals(50, pabloHari.dinero())
 	}
 	test "La nueva localidad de origen de PHari es silversSea" {
 		assert.equals(silversSea, pabloHari.localidadOrigen())
 	}
 }
+
+describe "Prueba de nuevos tipos de localidades"{
+	
+	test "La playa saintClement no es peligrosa porque las playas nunca son peligrosas"{
+		assert.notThat(saintClement.esDestinoPeligroso())
+	}
+	test "La montaña nono no es peligrosa porque tiene menos de 5000 metros pero requiere vacuna"{
+		assert.that(nono.esDestinoPeligroso())
+	}
+	test "La ciudad historica lujan nunca es peligrosa porque siempre se requiere que se lleve un seguro al viajero"{
+		assert.notThat(lujan.esDestinoPeligroso())
+	}
+	test "La ciudad historica lujan es destino destacado porque tiene más de 3 museos"{
+		assert.that(lujan.esDestinoImportante())
+	}
+}
+
+describe "Prueba de nuevos medios de transporte"{
+	test "El costoKM de 1KM en avion con un impulso de turbina de 10 es 10"{
+		assert.equals(10,avion.costoKM())
+	}
+	test "El costoKM de 1KM en Micro es $5000"{
+		assert.equals(5000,micro.costoKM())
+	}
+	test "El costoKM de 1KM en tren es $1429"{
+		assert.equals(1429,tren.costoKM())
+	}
+	test "El costoKM de 1KM en barco con una probabilidad de choque de 2, es $2000"{
+		assert.equals(2000,barco.costoKM())
+	}
+}
+describe "Prueba de preferencias de transporte"{
+	test "pabloHari con $1500, teniendo una preferencia estudiantil, elige avión"{
+		assert.equals(avion,barrileteCosmico.elegirMedioTransporte(pabloHari))
+	}
+	test "ArmandoBarreda con $15000, teniendo una preferencia empresarial, elige barco"{
+		assert.equals(barco,barrileteCosmico.elegirMedioTransporte(armandoBarreda))
+	}
+}
+	

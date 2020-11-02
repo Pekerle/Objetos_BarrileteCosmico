@@ -15,7 +15,7 @@ class Viaje {
 	method costoTransporte() {
 		return (self.distanciaALocalidad() * medioDeTransporte.costoKM())
 	}
-	method costoTotal(){
+	method costo(){
 		return localidadDestino.costoDestino() + self.costoTransporte()		
 	}
 }

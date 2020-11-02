@@ -7,6 +7,7 @@ class Usuario {
 	var dinero
 	var viajes
 	var usuariosSeguidos
+	var preferenciaDeTransporte
 	
 	method dinero(){
 		return dinero
@@ -34,6 +35,35 @@ class Usuario {
 		viajes.add(unViaje.localidadDestino())
 		localidadOrigen = unViaje.localidadDestino()
 	}
+	method preferenciaDeTransporte(unaPreferencia){
+		preferenciaDeTransporte=unaPreferencia
+	}
+	method preferenciaDeTransporte(){
+		return preferenciaDeTransporte
+	}
+	method puedePagar(unMonto){
+		return self.dinero()>unMonto
+	}
+}
+class PreferenciaDeTransporte{
+	method elegirMedio(listaDeTransportes,unDinero)
+}
+object empresarial inherits PreferenciaDeTransporte{
+	override method elegirMedio(listaDeTransportes,unDinero){
+		return listaDeTransportes.min({unMedio=>unMedio.cuantoTarda()})
+	}
+}
+
+object estudiantil inherits PreferenciaDeTransporte{
+	override method elegirMedio(listaDeTransportes,unDinero){
+		const listaPagable=listaDeTransportes.filter({unMedio=>unMedio.costoKM()<unDinero})
+		return listaPagable.min({unMedio=>unMedio.cuantoTarda()})
+	}
+}
+object grupoFamiliar inherits PreferenciaDeTransporte{
+	override method elegirMedio(listaDeTransportes,unDinero){
+		return listaDeTransportes.anyOne()
+	}
 }
 
 const pabloHari = new Usuario (
@@ -41,5 +71,14 @@ const pabloHari = new Usuario (
 	dinero=1500,
 	viajes=[lastToninas,goodAirs],
 	usuariosSeguidos=[],
-	localidadOrigen = garlicsSea
+	localidadOrigen = garlicsSea,
+	preferenciaDeTransporte = estudiantil
+)
+const armandoBarreda = new Usuario (
+	usuario="Skinner",
+	dinero=15000,
+	viajes=[lastToninas,goodAirs],
+	usuariosSeguidos=[],
+	localidadOrigen = garlicsSea,
+	preferenciaDeTransporte = empresarial
 )
