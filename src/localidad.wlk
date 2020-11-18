@@ -88,22 +88,3 @@ const goodAirs = new Localidad (
 	equipaje = ["Cerveza","Protector Solar"],
 	ubicacionKM = 0
 )
-const saintClement = new Playa(
-	costo = 750, 
-	equipaje = ["Protector Solar","Cerveza"], 
-	ubicacionKM = 0
-)
-
-const nono = new Montania(
-	costo = 7500, 
-	equipaje = ["Protector Solar","Cerveza","Vacuna cuartetera"], 
-	ubicacionKM = 0,
-	altura = 887
-)
-
-const lujan = new CiudadHistorica(
-	costo = 2570, 
-	equipaje = ["Protector Solar","Cerveza","Seguro de asistencia al viajero"], 
-	ubicacionKM = 0,
-	cantidadDeMuseos = 4
-)

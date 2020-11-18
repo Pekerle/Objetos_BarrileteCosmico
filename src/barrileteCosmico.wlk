@@ -2,6 +2,7 @@ import localidad.*
 import medioDeTransporte.*
 import viaje.*
 import usuario.*
+import preferenciaDeTransporte.*
 
 object barrileteCosmico {
 	const usuarios = [pabloHari]
@@ -15,8 +16,7 @@ object barrileteCosmico {
 		destinos.forEach({unDestino=>unDestino.aplicarDescuento(unDescuento)})
 	}
 	method esEmpresaExtrema(){
-		const destinosImportantes=self.destinosImportantes()
-		return destinosImportantes.any({unDestino=>unDestino.esDestinoPeligroso()})
+		return self.destinosImportantes().any({unDestino=>unDestino.esDestinoPeligroso()})
 	}
 	method conocerCarta(){
 		return destinos
@@ -28,22 +28,12 @@ object barrileteCosmico {
 		return mediosDeTransporte
 	}
 	method prepararViaje(usuario, destino){
+		
 		const viaje = new Viaje (
 			localidadOrigen = usuario.localidadOrigen(),
 			localidadDestino = destino,
-			medioDeTransporte = self.elegirMedioTransporte(usuario)
+			medioDeTransporte = usuario.transporteQueElige(mediosDeTransporte)
 		)
-		self.cobrarAUsuario(usuario, viaje)
-	}
-	
-	method cobrarAUsuario(usuario,viaje){
-		if(usuario.puedePagar(viaje.costo())){
-			usuario.pagar(viaje.costo())
-			usuario.agregarViaje(viaje)
-		}
-	}
-	method elegirMedioTransporte(unUsuario){
-		const unaPreferencia = unUsuario.preferenciaDeTransporte()
-		return unaPreferencia.elegirMedio(mediosDeTransporte, unUsuario.dinero())
+		usuario.pagar(viaje)
 	}
 }

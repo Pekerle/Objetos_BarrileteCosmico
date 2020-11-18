@@ -1,22 +1,24 @@
 import localidad.*
 import medioDeTransporte.*
+import viaje.*
+import preferenciaDeTransporte.*
 
 class Usuario {
-	const usuario
-	var localidadOrigen
-	var dinero
-	var viajes
+	const property usuario
+	var property localidadOrigen
+	var property dinero
+	var property viajes
 	var usuariosSeguidos
-	var preferenciaDeTransporte
+	const property preferenciaDeTransporte
 	
-	method dinero(){
-		return dinero
-	}
-	method pagar(unMonto){
-		dinero -= unMonto
-	}
-	method viajes(){
-		return viajes
+	method pagar(unViaje){
+		if(dinero > unViaje.costo()){
+			dinero -= unViaje.costo()
+			self.agregarViaje(unViaje)
+		}
+		else{
+			throw new NoTieneDineroSuficienteException(message = "La cantidad de dinero es insuficiente")
+		}
 	}
 	method obtenerKM(){
 		return viajes.sum({viaje=>viaje.costoDestino()/10})
@@ -28,43 +30,16 @@ class Usuario {
 	method serSeguido(unUsuario){
 		usuariosSeguidos.add(unUsuario)
 	}
-	method localidadOrigen(){
-		return localidadOrigen
-	}
 	method agregarViaje(unViaje){
 		viajes.add(unViaje.localidadDestino())
 		localidadOrigen = unViaje.localidadDestino()
 	}
-	method preferenciaDeTransporte(unaPreferencia){
-		preferenciaDeTransporte=unaPreferencia
-	}
-	method preferenciaDeTransporte(){
-		return preferenciaDeTransporte
-	}
-	method puedePagar(unMonto){
-		return self.dinero()>unMonto
-	}
-}
-class PreferenciaDeTransporte{
-	method elegirMedio(listaDeTransportes,unDinero)
-}
-object empresarial inherits PreferenciaDeTransporte{
-	override method elegirMedio(listaDeTransportes,unDinero){
-		return listaDeTransportes.min({unMedio=>unMedio.cuantoTarda()})
+	method transporteQueElige(mediosDeTransporte){
+		return preferenciaDeTransporte.elegirMedio(mediosDeTransporte, dinero)
 	}
 }
 
-object estudiantil inherits PreferenciaDeTransporte{
-	override method elegirMedio(listaDeTransportes,unDinero){
-		const listaPagable=listaDeTransportes.filter({unMedio=>unMedio.costoKM()<unDinero})
-		return listaPagable.min({unMedio=>unMedio.cuantoTarda()})
-	}
-}
-object grupoFamiliar inherits PreferenciaDeTransporte{
-	override method elegirMedio(listaDeTransportes,unDinero){
-		return listaDeTransportes.anyOne()
-	}
-}
+class NoTieneDineroSuficienteException inherits Exception{}
 
 const pabloHari = new Usuario (
 	usuario="PHari",
@@ -73,12 +48,4 @@ const pabloHari = new Usuario (
 	usuariosSeguidos=[],
 	localidadOrigen = garlicsSea,
 	preferenciaDeTransporte = estudiantil
-)
-const armandoBarreda = new Usuario (
-	usuario="Skinner",
-	dinero=15000,
-	viajes=[lastToninas,goodAirs],
-	usuariosSeguidos=[],
-	localidadOrigen = garlicsSea,
-	preferenciaDeTransporte = empresarial
 )

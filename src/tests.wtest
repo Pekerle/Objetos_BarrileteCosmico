@@ -1,8 +1,61 @@
 import barrileteCosmico.*
 import localidad.*
 import medioDeTransporte.*
+import preferenciaDeTransporte.*
 import usuario.*
 import viaje.*
+
+const saintClement = new Playa(
+	costo = 750, 
+	equipaje = ["Protector Solar","Cerveza"], 
+	ubicacionKM = 0
+)
+
+const nono = new Montania(
+	costo = 7500, 
+	equipaje = ["Protector Solar","Cerveza","Vacuna cuartetera"], 
+	ubicacionKM = 0,
+	altura = 887
+)
+const everest = new Montania(
+	costo = 7500, 
+	equipaje = ["Protector Solar","Cerveza"], 
+	ubicacionKM = 0,
+	altura = 8848
+)
+const springfield = new Montania(
+	costo = 460, 
+	equipaje = ["Protector Solar","Cerveza"], 
+	ubicacionKM = 0,
+	altura = 680
+)
+const lujan = new CiudadHistorica(
+	costo = 2570, 
+	equipaje = ["Protector Solar","Cerveza","Seguro de asistencia al viajero"], 
+	ubicacionKM = 0,
+	cantidadDeMuseos = 4
+)
+const laPlata = new CiudadHistorica(
+	costo = 2570, 
+	equipaje = ["Protector Solar","Cerveza"], 
+	ubicacionKM = 0,
+	cantidadDeMuseos = 2
+)
+
+const armandoBarreda = new Usuario (
+	usuario="Skinner",
+	dinero=15000,
+	viajes=[lastToninas,goodAirs],
+	usuariosSeguidos=[],
+	localidadOrigen = garlicsSea,
+	preferenciaDeTransporte = empresarial
+)
+
+const viajeGenerico = new Viaje (
+	localidadOrigen = garlicsSea,
+	localidadDestino = silversSea,
+	medioDeTransporte = avion
+)
 
 describe "Caso tipico"{
 	
@@ -102,16 +155,32 @@ describe "Prueba de nuevos tipos de localidades"{
 	test "La playa saintClement no es peligrosa porque las playas nunca son peligrosas"{
 		assert.notThat(saintClement.esDestinoPeligroso())
 	}
-	test "La montaña nono no es peligrosa porque tiene menos de 5000 metros pero requiere vacuna"{
+	test "La montaña nono es peligrosa porque tiene menos de 5000 metros pero requiere vacuna"{
 		assert.that(nono.esDestinoPeligroso())
+	}
+	test "La montaña nono es destino destacado porque las montañas siempre lo son"{
+		assert.that(nono.esDestinoImportante())
+	}
+	test "La montaña Everest es peligrosa porque tiene mas de 5000 metros"{
+		assert.that(everest.esDestinoPeligroso())
+	}
+	test "La montaña Springfield no es peligrosa porque no tiene mas de 5000 metros ni necesita vacuna"{
+		assert.notThat(springfield.esDestinoPeligroso())
 	}
 	test "La ciudad historica lujan nunca es peligrosa porque siempre se requiere que se lleve un seguro al viajero"{
 		assert.notThat(lujan.esDestinoPeligroso())
 	}
+	test "La ciudad historica laPlata es peligrosa porque no se requiere que se lleve un seguro al viajero"{
+		assert.that(laPlata.esDestinoPeligroso())
+	}
 	test "La ciudad historica lujan es destino destacado porque tiene más de 3 museos"{
 		assert.that(lujan.esDestinoImportante())
 	}
+	test "La ciudad historica laPlata No es destino destacado porque tiene 2 museos"{
+		assert.notThat(laPlata.esDestinoImportante())
+	}
 }
+
 
 describe "Prueba de nuevos medios de transporte"{
 	test "El costoKM de 1KM en avion con un impulso de turbina de 10 es 10"{
@@ -129,10 +198,11 @@ describe "Prueba de nuevos medios de transporte"{
 }
 describe "Prueba de preferencias de transporte"{
 	test "pabloHari con $1500, teniendo una preferencia estudiantil, elige avión"{
-		assert.equals(avion,barrileteCosmico.elegirMedioTransporte(pabloHari))
+		assert.equals(avion,pabloHari.transporteQueElige(barrileteCosmico.mediosDeTransporte()))
 	}
 	test "ArmandoBarreda con $15000, teniendo una preferencia empresarial, elige barco"{
-		assert.equals(barco,barrileteCosmico.elegirMedioTransporte(armandoBarreda))
+		assert.equals(barco,armandoBarreda.transporteQueElige(barrileteCosmico.mediosDeTransporte()))
 	}
+	//Grupo familiar no se prueba ya que elije uno aleatorio de entre los medios de transporte
 }
 	

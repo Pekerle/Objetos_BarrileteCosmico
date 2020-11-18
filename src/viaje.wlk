@@ -19,9 +19,3 @@ class Viaje {
 		return localidadDestino.costoDestino() + self.costoTransporte()		
 	}
 }
-
-const viajeGenerico = new Viaje (
-	localidadOrigen = garlicsSea,
-	localidadDestino = silversSea,
-	medioDeTransporte = avion
-)
